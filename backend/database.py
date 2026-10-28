@@ -56,6 +56,10 @@ def init_db():
         instant_delivery INTEGER DEFAULT 1,
         in_stock INTEGER DEFAULT 1,
         sales_count INTEGER DEFAULT 0,
+        seller_name TEXT DEFAULT 'Admin',
+        seller_upi_id TEXT DEFAULT '9059382131-2@ybl',
+        seller_payout_amount REAL DEFAULT 0.0,
+        platform_fee REAL DEFAULT 5.0,
         FOREIGN KEY (category_id) REFERENCES categories (id)
     )
     """)
@@ -832,9 +836,16 @@ def add_user_voucher(data: Dict[str, Any]) -> Dict[str, Any]:
         id, name, brand, category_id, description, description_te,
         discount_pct, denominations, card_gradient, brand_color,
         logo_icon, rating, total_reviews, terms, redemption_guide,
-        featured, instant_delivery, in_stock, sales_count
-    ) VALUES (?, ?, ?, 'coupons', ?, ?, 0.0, ?, 'linear-gradient(135deg, #4338ca 0%, #312e81 60%, #1e1b4b 100%)', '#6366f1', 'fa-solid fa-tag', 5.0, 10, 'Single-use promo voucher code.', 'Apply this promo code on the official brand app/website.', 1, 1, 1, 0)
-    """, (card_id, f"{brand} - {title}", brand, desc, desc_te, json.dumps([int(price)])))
+        featured, instant_delivery, in_stock, sales_count,
+        seller_name, seller_upi_id, seller_payout_amount, platform_fee
+    ) VALUES (?, ?, ?, 'coupons', ?, ?, 0.0, ?, 'linear-gradient(135deg, #4338ca 0%, #312e81 60%, #1e1b4b 100%)', '#6366f1', 'fa-solid fa-tag', 5.0, 10, 'Single-use promo voucher code.', 'Apply this promo code on the official brand app/website.', 1, 1, 1, 0, ?, ?, ?, 5.0)
+    """, (
+        card_id, f"{brand} - {title}", brand, desc, desc_te,
+        json.dumps([int(price)]),
+        data.get("seller_name", "Community Seller").strip(),
+        data.get("seller_upi_id", "9059382131-2@ybl").strip(),
+        max(1.0, price - 5.0) # Seller gets price - Rs.5 platform fee
+    ))
 
     conn.commit()
     conn.close()

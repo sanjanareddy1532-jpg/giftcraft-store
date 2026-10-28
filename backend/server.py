@@ -95,12 +95,28 @@ def get_categories():
     return database.get_categories()
 
 @app.get("/api/merchant-info")
-def get_merchant_public_info():
-    """Retrieve active merchant UPI ID for customer QR code payment"""
+def get_merchant_public_info(card_id: Optional[str] = None):
+    """Retrieve active seller/merchant UPI ID for customer QR code payment with platform fee routing"""
     settings = database.get_merchant_settings()
+    admin_upi = settings.get("merchant_upi_id", "9059382131-2@ybl")
+    
+    # If a specific card_id is passed, check if it has a custom community seller
+    if card_id:
+        card = database.get_card_by_id(card_id)
+        if card and card.get("seller_upi_id") and card.get("seller_name") != "Admin":
+            return {
+                "merchant_name": card.get("seller_name", "Verified Seller"),
+                "merchant_upi_id": card.get("seller_upi_id"),
+                "is_community_seller": True,
+                "admin_fee_upi": admin_upi, # Admin gets ₹5 commission
+                "platform_fee": card.get("platform_fee", 5.0)
+            }
+
     return {
         "merchant_name": settings.get("merchant_name", "GiftCraft Store"),
-        "merchant_upi_id": settings.get("merchant_upi_id", "9059382131-2@ybl")
+        "merchant_upi_id": admin_upi,
+        "is_community_seller": False,
+        "platform_fee": 0.0
     }
 
 @app.get("/api/cards")

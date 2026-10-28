@@ -543,9 +543,12 @@
             <!-- UPI ID & Details -->
             <div class="flex-1 space-y-2 text-xs w-full">
               <div>
-                <span class="text-slate-400 text-[11px] block">మర్చంట్ UPI ID (Merchant UPI ID):</span>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400 text-[11px] block">మర్చంట్ UPI ID (Seller UPI ID):</span>
+                  <span id="checkout-seller-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Official Store</span>
+                </div>
                 <div class="flex items-center gap-2 mt-1">
-                  <span class="font-mono text-emerald-300 font-bold bg-slate-900/90 px-2.5 py-1 rounded-lg border border-white/10 text-xs sm:text-sm select-all">9059382131-2@ybl</span>
+                  <span id="checkout-upi-id-label" class="font-mono text-emerald-300 font-bold bg-slate-900/90 px-2.5 py-1 rounded-lg border border-white/10 text-xs sm:text-sm select-all">9059382131-2@ybl</span>
                   <button type="button" id="copy-upi-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] border border-white/10">
                     <i class="fa-solid fa-copy mr-1"></i> Copy
                   </button>
@@ -771,12 +774,26 @@
           </div>
         </div>
 
-        <div class="p-3 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <span class="text-slate-400 block text-[11px]">డబ్బులు వచ్చే మీ UPI ID:</span>
-            <span class="font-mono text-emerald-300 font-bold">9059382131-2@ybl</span>
+            <label class="block text-slate-300 font-medium mb-1">మీ పేరు లేదా షాప్ పేరు (Your Name / Store) *</label>
+            <input type="text" id="sell-name" placeholder="e.g. Ramesh or Vijay Stores" value="Sanjana" required class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:border-emerald-400 focus:outline-none">
           </div>
-          <span class="text-[10px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded font-semibold border border-emerald-500/30">100% మీ అకౌంట్‌కే</span>
+          <div>
+            <label class="block text-emerald-400 font-bold mb-1">మీ సొంత UPI ID (డబ్బులు పడాల్సిన UPI) *</label>
+            <input type="text" id="sell-upi" placeholder="e.g. yourname@ybl or 9876543210@paytm" value="9059382131-2@ybl" required class="w-full bg-slate-800 border border-emerald-500/50 rounded-xl px-3 py-2 text-white font-mono focus:border-emerald-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/30 text-[11px] space-y-1">
+          <div class="flex items-center justify-between font-bold">
+            <span class="text-white">💰 కస్టమర్ పేమెంట్ డిస్ట్రిబ్యూషన్:</span>
+            <span class="text-emerald-400">ఆటోమేటిక్ మల్టీ-వెండర్ మోడ్</span>
+          </div>
+          <div class="text-slate-300">
+            • అమ్మకందారునికి వచ్చే మొత్తం: <strong class="text-emerald-300 font-mono">విక్రయ ధర - ₹5 ప్లాట్‌ఫారమ్ ఫీజు</strong> (నేరుగా వారి UPI అకౌంట్‌కి)<br>
+            • ప్లాట్‌ఫారమ్ ఓనర్‌కి వచ్చే కమిషన్: <strong class="text-indigo-400 font-mono">₹5 ప్రతి కార్డ్‌పై</strong> (మీ అకౌంట్: 9059382131-2@ybl కి)
+          </div>
         </div>
 
         <button type="submit" id="submit-sell-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">

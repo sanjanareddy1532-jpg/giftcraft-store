@@ -752,9 +752,11 @@ function updateCheckoutSummary() {
   document.getElementById('summary-final-price').textContent = `₹${finalPrice.toFixed(2)}`;
   document.getElementById('btn-pay-now-text').textContent = `Pay ₹${finalPrice.toFixed(2)} & Deliver 16-Digit Voucher`;
 
-  // Update Dynamic Live UPI QR Code with Real Merchant UPI ID
-  const merchantUpiId = '9059382131-2@ybl';
-  const merchantName = 'GiftCraft Store';
+  // Update Dynamic Live UPI QR Code
+  // If card has a community seller, use their UPI ID, else use admin's UPI ID (9059382131-2@ybl)
+  const isCommunity = card.seller_upi_id && card.seller_name !== 'Admin';
+  const merchantUpiId = isCommunity ? card.seller_upi_id : '9059382131-2@ybl';
+  const merchantName = isCommunity ? card.seller_name : 'GiftCraft Store';
   const upiLink = `upi://pay?pa=${encodeURIComponent(merchantUpiId)}&pn=${encodeURIComponent(merchantName)}&am=${finalPrice.toFixed(2)}&cu=INR&tn=${encodeURIComponent('GiftCard ' + card.name)}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
 
@@ -766,6 +768,16 @@ function updateCheckoutSummary() {
 
   const upiAmtDisplay = document.getElementById('upi-amount-display');
   if (upiAmtDisplay) upiAmtDisplay.textContent = `₹${finalPrice.toFixed(2)}`;
+
+  // Display active seller UPI ID in checkout box
+  const upiIdDisplay = document.getElementById('checkout-upi-id-label');
+  if (upiIdDisplay) {
+    upiIdDisplay.textContent = merchantUpiId;
+  }
+  const sellerBadge = document.getElementById('checkout-seller-badge');
+  if (sellerBadge) {
+    sellerBadge.textContent = isCommunity ? `Seller: ${card.seller_name}` : 'Official Store';
+  }
 }
 
 async function executeOrderCheckout() {
@@ -980,6 +992,9 @@ function initModals() {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> లిస్టింగ్ అవుతోంది...';
 
+      const sellerNameInput = document.getElementById('sell-name');
+      const sellerUpiInput = document.getElementById('sell-upi');
+      
       const payload = {
         brand_name: document.getElementById('sell-brand').value.trim(),
         offer_title: document.getElementById('sell-title').value.trim(),
@@ -987,8 +1002,8 @@ function initModals() {
         voucher_pin: document.getElementById('sell-pin').value.trim(),
         selling_price: parseFloat(document.getElementById('sell-price').value),
         expiry_date: document.getElementById('sell-expiry').value.trim(),
-        seller_name: 'Sanjana',
-        seller_upi_id: '9059382131-2@ybl'
+        seller_name: sellerNameInput ? (sellerNameInput.value.trim() || 'Community Seller') : 'Sanjana',
+        seller_upi_id: sellerUpiInput ? (sellerUpiInput.value.trim() || '9059382131-2@ybl') : '9059382131-2@ybl'
       };
 
       try {
