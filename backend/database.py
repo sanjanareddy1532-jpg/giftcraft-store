@@ -130,6 +130,25 @@ def init_db():
     )
     """)
 
+    # User Submitted Vouchers for Sale Table
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_vouchers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        brand_name TEXT NOT NULL,
+        offer_title TEXT NOT NULL,
+        voucher_code TEXT NOT NULL,
+        voucher_pin TEXT DEFAULT '',
+        original_value REAL DEFAULT 0.0,
+        selling_price REAL NOT NULL,
+        expiry_date TEXT DEFAULT '',
+        seller_name TEXT NOT NULL,
+        seller_phone TEXT NOT NULL,
+        seller_upi_id TEXT NOT NULL,
+        status TEXT DEFAULT 'AVAILABLE', -- AVAILABLE, SOLD, EXPIRED
+        created_at TEXT NOT NULL
+    )
+    """)
+
     conn.commit()
     seed_data(conn)
     conn.close()
@@ -773,6 +792,60 @@ def get_settlements_history() -> List[Dict[str, Any]]:
                 "settled_at": "26 Oct 2026 at 08:00 AM (T+1 Settlement)"
             }
         ]
+    return rows
+
+def add_user_voucher(data: Dict[str, Any]) -> Dict[str, Any]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    created_at = datetime.now().isoformat()
+    cursor.execute("""
+    INSERT INTO user_vouchers (
+        brand_name, offer_title, voucher_code, voucher_pin,
+        original_value, selling_price, expiry_date, seller_name,
+        seller_phone, seller_upi_id, status, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'AVAILABLE', ?)
+    """, (
+        data.get("brand_name", "").strip(),
+        data.get("offer_title", "").strip(),
+        data.get("voucher_code", "").strip(),
+        data.get("voucher_pin", "").strip(),
+        float(data.get("original_value", 0.0) or 0.0),
+        float(data.get("selling_price", 25.0)),
+        data.get("expiry_date", "").strip(),
+        data.get("seller_name", "Sanjana").strip(),
+        data.get("seller_phone", "").strip(),
+        data.get("seller_upi_id", "9059382131-2@ybl").strip(),
+        created_at
+    ))
+    voucher_id = cursor.lastrowid
+
+    # Also automatically add or update in live gift_cards catalog so it shows immediately on the website!
+    card_id = f"custom-voucher-{voucher_id}"
+    brand = data.get("brand_name", "").strip()
+    title = data.get("offer_title", "").strip() or f"{brand} Offer Voucher"
+    price = float(data.get("selling_price", 25.0))
+    desc = f"{title}. Promo Code provided instantly to your WhatsApp/Email upon checkout."
+    desc_te = f"{brand} స్పెషల్ ఆఫర్ వోచర్ కోడ్. కొనుగోలు చేసిన వెంటనే కోడ్ అందుతుంది."
+    
+    cursor.execute("""
+    INSERT INTO gift_cards (
+        id, name, brand, category_id, description, description_te,
+        discount_pct, denominations, card_gradient, brand_color,
+        logo_icon, rating, total_reviews, terms, redemption_guide,
+        featured, instant_delivery, in_stock, sales_count
+    ) VALUES (?, ?, ?, 'coupons', ?, ?, 0.0, ?, 'linear-gradient(135deg, #4338ca 0%, #312e81 60%, #1e1b4b 100%)', '#6366f1', 'fa-solid fa-tag', 5.0, 10, 'Single-use promo voucher code.', 'Apply this promo code on the official brand app/website.', 1, 1, 1, 0)
+    """, (card_id, f"{brand} - {title}", brand, desc, desc_te, json.dumps([int(price)])))
+
+    conn.commit()
+    conn.close()
+    return {"id": voucher_id, "card_id": card_id, "status": "AVAILABLE"}
+
+def get_user_vouchers() -> List[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM user_vouchers ORDER BY id DESC")
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
     return rows
 
 # Initialize on module load

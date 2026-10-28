@@ -964,6 +964,59 @@ function initModals() {
     }
   });
 
+  // Sell Voucher Modal (Seller Listing)
+  const sellModal = document.getElementById('sell-modal');
+  const openSellBtn = document.getElementById('open-sell-modal-btn');
+  const closeSellBtn = document.getElementById('close-sell-modal-btn');
+  const sellForm = document.getElementById('sell-voucher-form');
+
+  if (openSellBtn && sellModal) {
+    openSellBtn.addEventListener('click', () => sellModal.classList.remove('hidden'));
+    closeSellBtn.addEventListener('click', () => sellModal.classList.add('hidden'));
+
+    sellForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submit-sell-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> లిస్టింగ్ అవుతోంది...';
+
+      const payload = {
+        brand_name: document.getElementById('sell-brand').value.trim(),
+        offer_title: document.getElementById('sell-title').value.trim(),
+        voucher_code: document.getElementById('sell-code').value.trim(),
+        voucher_pin: document.getElementById('sell-pin').value.trim(),
+        selling_price: parseFloat(document.getElementById('sell-price').value),
+        expiry_date: document.getElementById('sell-expiry').value.trim(),
+        seller_name: 'Sanjana',
+        seller_upi_id: '9059382131-2@ybl'
+      };
+
+      try {
+        const res = await fetch('/api/sell-voucher', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('🎉 సూపర్! ' + data.message);
+          sellModal.classList.add('hidden');
+          sellForm.reset();
+          // Reload cards so newly added voucher appears immediately!
+          fetchCards();
+        } else {
+          alert('వివరాలు సేవ్ చేయడంలో సమస్య ఏర్పడింది.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Server error while listing voucher.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>లిస్ట్ చేయండి (Put on Live Sale)</span>';
+      }
+    });
+  }
+
   // Admin Modal
   const adminModal = document.getElementById('admin-modal');
   const openAdminBtn = document.getElementById('open-admin-modal-btn');

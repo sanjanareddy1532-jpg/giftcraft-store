@@ -74,6 +74,12 @@
           <span id="lang-btn-text">తెలుగు (TE)</span>
         </button>
 
+        <!-- Sell Gift Card / Voucher Button (NEW) -->
+        <button id="open-sell-modal-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/40 text-xs font-bold text-white shadow-md shadow-emerald-600/30 transition-all">
+          <i class="fa-solid fa-circle-plus text-amber-300"></i>
+          <span>+ Sell Gift Card (కార్డ్ అమ్మండి)</span>
+        </button>
+
         <!-- Balance Checker Trigger -->
         <button id="open-balance-modal-btn" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-medium text-slate-200 transition-all">
           <i class="fa-solid fa-wallet text-amber-400"></i>
@@ -703,6 +709,83 @@
     </div>
   </div>
 
+
+  <!-- 2.5 SELL GIFT CARD MODAL (FOR SELLER) -->
+  <div id="sell-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel w-full max-w-xl rounded-2xl border border-emerald-500/40 shadow-2xl p-6 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white">మీ గిఫ్ట్ కార్డ్ / వోచర్ అమ్మండి (List for Sale)</h3>
+            <p class="text-[11px] text-slate-400">వివరాలు ఎంటర్ చేయగానే వెబ్‌సైట్‌లో లైవ్‌గా అమ్మకానికి వస్తుంది</p>
+          </div>
+        </div>
+        <button id="close-sell-modal-btn" class="text-slate-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form id="sell-voucher-form" class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">బ్రాండ్ పేరు (Brand Name) *</label>
+            <input type="text" id="sell-brand" placeholder="e.g. Domino's, boAt, Flight, Amazon" required class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:border-emerald-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">ఆఫర్ టైటిల్ (Offer Details) *</label>
+            <input type="text" id="sell-title" placeholder="e.g. 33% OFF, Rs.500 OFF, Flat Rs.600 OFF" required class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:border-emerald-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-emerald-500/30 space-y-3">
+          <div class="text-[11px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-key"></i> వోచర్ కోడ్ వివరాలు (Voucher Code & PIN)
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-400 mb-1">కూపన్ కోడ్ (Promo / Voucher Code) *</label>
+              <input type="text" id="sell-code" placeholder="e.g. DOMINO33SALE or AMZN-8291..." required class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white font-mono uppercase focus:border-emerald-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">పిన్ నంబర్ (PIN if applicable)</label>
+              <input type="text" id="sell-pin" placeholder="e.g. 4821 (optional)" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white font-mono focus:border-emerald-400 focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-emerald-400 font-bold mb-1">మీరు అమ్మే ధర (Selling Price in ₹) *</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-mono">₹</span>
+              <input type="number" id="sell-price" placeholder="25" min="5" max="10000" required class="w-full bg-slate-800 border border-emerald-500/50 rounded-xl pl-7 pr-3 py-2 text-white font-bold font-mono focus:border-emerald-400 focus:outline-none">
+            </div>
+            <span class="text-[10px] text-slate-400">కస్టమర్ మీకు పే చేయాల్సిన మొత్తం (ఉదా: 25)</span>
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1">ఎక్స్‌పైరీ తేదీ (Expiry Date)</label>
+            <input type="text" id="sell-expiry" placeholder="e.g. 31 Dec 2026 / 1 Month" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:border-emerald-400 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs">
+          <div>
+            <span class="text-slate-400 block text-[11px]">డబ్బులు వచ్చే మీ UPI ID:</span>
+            <span class="font-mono text-emerald-300 font-bold">9059382131-2@ybl</span>
+          </div>
+          <span class="text-[10px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded font-semibold border border-emerald-500/30">100% మీ అకౌంట్‌కే</span>
+        </div>
+
+        <button type="submit" id="submit-sell-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:opacity-95 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
+          <i class="fa-solid fa-check"></i>
+          <span>లిస్ట్ చేయండి (Put on Live Sale)</span>
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- 3. BALANCE CHECKER MODAL -->
   <div id="balance-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">

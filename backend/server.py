@@ -75,6 +75,18 @@ class MerchantSettingsUpdate(BaseModel):
     razorpay_key_id: Optional[str] = "rzp_test_YOUR_KEY_HERE"
     phonepe_merchant_id: Optional[str] = "MERCHANTUAT"
 
+class SellVoucherRequest(BaseModel):
+    brand_name: str
+    offer_title: str
+    voucher_code: str
+    voucher_pin: Optional[str] = ""
+    original_value: Optional[float] = 0.0
+    selling_price: float
+    expiry_date: Optional[str] = ""
+    seller_name: Optional[str] = "Sanjana"
+    seller_phone: Optional[str] = ""
+    seller_upi_id: Optional[str] = "9059382131-2@ybl"
+
 # ----------------- API Endpoints -----------------
 
 @app.get("/api/categories")
@@ -264,6 +276,21 @@ def get_recent_orders():
 def get_admin_dashboard_stats():
     """Retrieve admin summary statistics"""
     return database.get_admin_stats()
+
+@app.post("/api/sell-voucher")
+def submit_voucher_for_sale(payload: SellVoucherRequest):
+    """Allow store owner or user to list their gift card / voucher code for sale"""
+    res = database.add_user_voucher(payload.model_dump())
+    return {
+        "success": True,
+        "message": f"'{payload.brand_name}' వోచర్ విజయవంతంగా లైవ్ లిస్టింగ్ లోకి వచ్చింది! కస్టమర్లు ఇప్పుడే దీన్ని కొనుగోలు చేయవచ్చు.",
+        "voucher": res
+    }
+
+@app.get("/api/my-vouchers")
+def list_my_submitted_vouchers():
+    """List all vouchers listed by the seller"""
+    return database.get_user_vouchers()
 
 @app.get("/api/admin/payout-settings")
 def get_payout_settings():
