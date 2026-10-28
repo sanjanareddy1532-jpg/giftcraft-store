@@ -1,0 +1,256 @@
+/* ====================================================================
+   GiftCraft AI - Modern Stylesheet (Glassmorphism & Realistic Cards)
+   ==================================================================== */
+
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary: #10b981;
+  --accent: #f59e0b;
+  --danger: #ef4444;
+  --bg-dark: #090d16;
+  --bg-card: rgba(22, 27, 46, 0.75);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', 'Noto Sans Telugu', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient Background Glows */
+.ambient-glow-1 {
+  position: fixed;
+  top: -100px;
+  left: 20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow-2 {
+  position: fixed;
+  bottom: 10%;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom Glassmorphism Box */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.glass-nav {
+  background: rgba(9, 13, 22, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+/* Realistic Virtual Gift Card Styling */
+.gift-card-visual {
+  position: relative;
+  aspect-ratio: 1.586 / 1;
+  width: 100%;
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.gift-card-visual::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.75s ease;
+}
+
+.gift-card-visual:hover::before {
+  left: 200%;
+}
+
+.gift-card-visual:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Card Chip & Wireless icon */
+.emv-chip {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #d4af37, #fef08a, #ca8a04);
+  border-radius: 6px;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.emv-chip::after {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 0;
+  right: 0;
+  height: 14px;
+  border-top: 1px solid rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+.contactless-wave {
+  opacity: 0.7;
+  font-size: 1.2rem;
+}
+
+/* Scratch Card Canvas and Reveal Box */
+.scratch-container {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #4b5563;
+}
+
+.scratch-hidden-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  padding: 16px;
+  text-align: center;
+}
+
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  z-index: 10;
+}
+
+/* Chat Drawer / Widget */
+.ai-chat-bubble {
+  max-width: 85%;
+  border-radius: 18px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.ai-chat-bubble.bot {
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-top-left-radius: 4px;
+  color: #e2e8f0;
+}
+
+.ai-chat-bubble.user {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  border-top-right-radius: 4px;
+  color: #fff;
+  margin-left: auto;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Pulse Glow Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.8), 0 0 10px rgba(16, 185, 129, 0.5);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+/* Category Filter Active Pill */
+.category-pill.active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  border-color: #818cf8;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+}
+
+/* Denomination Selector Pill */
+.denom-btn {
+  transition: all 0.2s ease;
+}
+.denom-btn.active {
+  background-color: #6366f1 !important;
+  color: #ffffff !important;
+  border-color: #818cf8 !important;
+}
+
+/* Confetti particles for purchase celebration */
+@keyframes fall {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f59e0b;
+  opacity: 0.9;
+  animation: fall 3s linear infinite;
+}

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GiftCraft AI - All-in-One AI Gift Card Marketplace</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#090d16] text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Top Announcement Promo Bar -->
+  <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-xs py-2 px-4 text-center border-b border-indigo-500/20 flex items-center justify-center gap-3">
+    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold text-[11px] border border-emerald-500/30">
+      <i class="fa-solid fa-sparkles text-[10px]"></i> AI FESTIVE OFFER
+    </span>
+    <span id="promo-text">Use coupon <strong class="text-amber-400 font-mono">WELCOME10</strong> for 10% Flat OFF or <strong class="text-amber-400 font-mono">AIDEAL5</strong> for extra savings! Instant 16-Digit Delivery in 5 Seconds ⚡</span>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-white/10 px-4 lg:px-8 py-3.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-gift text-xl text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-indigo-100 to-indigo-400 bg-clip-text text-transparent">GiftCraft AI</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">PRO</span>
+          </div>
+          <p class="text-[11px] text-slate-400" id="nav-subtitle">అన్ని రకాల గిఫ్ట్ కార్డ్‌లు & AI సేల్స్</p>
+        </div>
+      </a>
+
+      <!-- Search Bar in Nav -->
+      <div class="hidden md:flex flex-1 max-w-md mx-4">
+        <div class="relative w-full">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input 
+            type="text" 
+            id="nav-search-input" 
+            placeholder="Search Amazon, Steam, Netflix, Zomato, Google Play..." 
+            class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+          >
+          <button id="clear-search-btn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        
+        <!-- Language Switcher -->
+        <button id="lang-toggle-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-medium text-slate-200 transition-all">
+          <i class="fa-solid fa-language text-indigo-400"></i>
+          <span id="lang-btn-text">తెలుగు (TE)</span>
+        </button>
+
+        <!-- Balance Checker Trigger -->
+        <button id="open-balance-modal-btn" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-medium text-slate-200 transition-all">
+          <i class="fa-solid fa-wallet text-amber-400"></i>
+          <span id="txt-check-balance">Check Balance</span>
+        </button>
+
+        <!-- Admin Stats Trigger -->
+        <button id="open-admin-modal-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-medium text-slate-200 transition-all" title="View Sales Statistics">
+          <i class="fa-solid fa-chart-line text-emerald-400"></i>
+          <span class="hidden lg:inline" id="txt-admin-analytics">Sales Analytics</span>
+        </button>
+
+        <!-- AI Assistant Header Trigger -->
+        <button id="nav-open-ai-btn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-xs font-semibold shadow-md shadow-indigo-600/30 transition-all">
+          <i class="fa-solid fa-robot"></i>
+          <span id="txt-ai-btn">GiftGenie AI</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8 relative z-10">
+
+    <!-- Hero Section -->
+    <section class="mb-10 text-center relative pt-4 pb-8">
+      
+      <!-- Top Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-4 backdrop-blur-md">
+        <i class="fa-solid fa-shield-check text-emerald-400"></i>
+        <span id="hero-badge">100% Verified Digital Codes • Instant Scratch & Redeem</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight md:leading-tight mb-4">
+        <span id="hero-title-prefix">Discover & Buy All Kinds of</span><br class="hidden sm:inline">
+        <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent" id="hero-title-highlight">Gift Cards with AI Assistance</span>
+      </h1>
+
+      <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto mb-8" id="hero-desc">
+        Amazon, Steam, Flipkart, Netflix, Google Play, Zomato, PlayStation, Domino's, Apple & more! Let our AI Assistant pick the perfect card, apply discounts, and generate custom greeting messages.
+      </p>
+
+      <!-- Interactive AI Ask Box in Hero -->
+      <div class="max-w-2xl mx-auto glass-panel p-2.5 rounded-2xl border border-indigo-500/30 shadow-2xl shadow-indigo-500/10 mb-6">
+        <div class="flex flex-col sm:flex-row items-center gap-2">
+          <div class="flex items-center gap-3 w-full px-3 py-1">
+            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400 text-lg animate-pulse"></i>
+            <input 
+              type="text" 
+              id="hero-ai-input" 
+              placeholder="Ask AI: e.g. Suggest gaming card for brother under ₹1000..." 
+              class="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none"
+            >
+          </div>
+          <button 
+            id="hero-ai-submit-btn" 
+            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-xs font-bold tracking-wide uppercase shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 whitespace-nowrap transition-all"
+          >
+            <span>Ask Genie</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick AI Prompt Chips -->
+      <div class="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto text-xs">
+        <span class="text-slate-500 text-[11px] uppercase tracking-wider font-semibold mr-1" id="try-asking-txt">Try Asking:</span>
+        <button class="ai-chip px-3 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-300 transition-all" data-prompt="Best gaming cards under ₹1000">
+          🎮 Gaming under ₹1000
+        </button>
+        <button class="ai-chip px-3 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-300 transition-all" data-prompt="Sister birthday shopping gift card with discount">
+          🛍️ Sister Birthday Shopping
+        </button>
+        <button class="ai-chip px-3 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-300 transition-all" data-prompt="Movie and OTT streaming cards">
+          🎬 Netflix & Movie Vouchers
+        </button>
+        <button class="ai-chip px-3 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-300 transition-all" data-prompt="Food vouchers for foodie friend">
+          🍕 Zomato & Domino's
+        </button>
+        <button class="ai-chip px-3 py-1 rounded-full bg-indigo-950/60 hover:bg-indigo-900/60 border border-indigo-500/40 text-indigo-300 font-medium transition-all" data-prompt="నా ఫ్రెండ్ పుట్టినరోజుకి ₹500 లోపు ఏ గిఫ్ట్ కార్డ్ బాగుంటుంది?">
+          🇮🇳 తెలుగులో అడగండి (Telugu)
+        </button>
+      </div>
+
+      <!-- Trust Pillars -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto mt-8 pt-6 border-t border-white/5 text-left">
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/40 border border-white/5">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+            <i class="fa-solid fa-bolt text-sm"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-200" id="pillar-instant-title">Instant E-Delivery</div>
+            <div class="text-[11px] text-slate-500" id="pillar-instant-desc">Code reveals in 5 seconds</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/40 border border-white/5">
+          <div class="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+            <i class="fa-solid fa-percent text-sm"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-200" id="pillar-discounts-title">Up to 15% Savings</div>
+            <div class="text-[11px] text-slate-500" id="pillar-discounts-desc">Direct brand cashbacks</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/40 border border-white/5">
+          <div class="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+            <i class="fa-solid fa-heart text-sm"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-200" id="pillar-greetings-title">AI Custom Wishes</div>
+            <div class="text-[11px] text-slate-500" id="pillar-greetings-desc">Heartfelt greeting cards</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/40 border border-white/5">
+          <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+            <i class="fa-solid fa-qrcode text-sm"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-200" id="pillar-upi-title">UPI & QR Instant</div>
+            <div class="text-[11px] text-slate-500" id="pillar-upi-desc">GPay, PhonePe, Cards</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Recent Purchases Social Proof Live Ticker -->
+    <div class="mb-8 p-3 rounded-xl bg-slate-900/60 border border-white/5 flex items-center gap-3 overflow-hidden text-xs">
+      <span class="inline-flex items-center gap-1.5 text-emerald-400 font-semibold uppercase text-[11px] whitespace-nowrap">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span id="recent-live-label">Recent Purchases:</span>
+      </span>
+      <div id="ticker-content" class="text-slate-400 flex items-center gap-6 whitespace-nowrap overflow-x-auto no-scrollbar">
+        <span>🎮 Rahul bought <strong>Steam Wallet ₹1000</strong> (Saved ₹50)</span>
+        <span>•</span>
+        <span>🛍️ Sneha bought <strong>Amazon Pay ₹2000</strong></span>
+        <span>•</span>
+        <span>🍕 Vikram bought <strong>Domino's Pizza ₹500</strong> (Saved ₹75)</span>
+        <span>•</span>
+        <span>🍿 Ananya bought <strong>BookMyShow ₹1000</strong></span>
+        <span>•</span>
+        <span>📱 Rajesh bought <strong>Google Play ₹500</strong></span>
+      </div>
+    </div>
+
+    <!-- Category Filter Bar & Sorting -->
+    <section class="mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+        
+        <!-- Category Buttons -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar" id="category-filter-container">
+          <button class="category-pill active px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 flex items-center gap-2 transition-all whitespace-nowrap" data-category="all">
+            <i class="fa-solid fa-grid-2"></i>
+            <span id="cat-all-txt">All Cards (అన్నీ)</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="gaming">
+            <i class="fa-solid fa-gamepad text-indigo-400"></i>
+            <span id="cat-gaming-txt">Gaming</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="shopping">
+            <i class="fa-solid fa-bag-shopping text-pink-400"></i>
+            <span id="cat-shopping-txt">Shopping</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="entertainment">
+            <i class="fa-solid fa-film text-purple-400"></i>
+            <span id="cat-ent-txt">Entertainment</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="food">
+            <i class="fa-solid fa-utensils text-amber-400"></i>
+            <span id="cat-food-txt">Food & Dining</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="travel">
+            <i class="fa-solid fa-plane-departure text-emerald-400"></i>
+            <span id="cat-travel-txt">Travel</span>
+          </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="software">
+            <i class="fa-solid fa-laptop-code text-cyan-400"></i>
+            <span id="cat-soft-txt">Software</span>
+          </button>
+        </div>
+
+        <!-- Sort & Count -->
+        <div class="flex items-center justify-between md:justify-end gap-3 text-xs">
+          <span class="text-slate-400"><strong id="card-count-display" class="text-white">22</strong> Cards</span>
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500 hidden sm:inline" id="sort-label">Sort:</span>
+            <select id="sort-select" class="bg-slate-800 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="popular">Most Popular</option>
+              <option value="discount">Highest Discount</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Gift Cards Grid -->
+    <section>
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Dynamic Cards rendered via app.js -->
+        <div class="col-span-full py-16 text-center text-slate-400">
+          <i class="fa-solid fa-circle-notch fa-spin text-2xl text-indigo-500 mb-3"></i>
+          <p>Loading gift card catalog...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FLOATING AI CHAT CONCIERGE ==================== -->
+  
+  <!-- Trigger Floating Pill -->
+  <div class="fixed bottom-6 right-6 z-50">
+    <button id="floating-chat-toggle-btn" class="pulse-glow relative flex items-center gap-3 px-5 py-3 rounded-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-semibold text-sm shadow-2xl shadow-indigo-600/40 hover:scale-105 active:scale-95 transition-all">
+      <div class="relative">
+        <i class="fa-solid fa-robot text-lg"></i>
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-indigo-900"></span>
+      </div>
+      <span id="floating-ai-label">Ask GiftGenie AI</span>
+    </button>
+  </div>
+
+  <!-- AI Chat Drawer Modal -->
+  <div id="ai-chat-drawer" class="hidden fixed inset-y-0 right-0 w-full max-w-md sm:max-w-lg z-50 glass-panel shadow-2xl flex flex-col border-l border-white/10 transition-transform duration-300">
+    
+    <!-- Drawer Header -->
+    <div class="p-4 border-b border-white/10 bg-slate-900/90 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-pink-600 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-robot text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="font-bold text-sm text-white">GiftGenie AI Sales Concierge</h3>
+            <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">ONLINE</span>
+          </div>
+          <p class="text-[11px] text-slate-400" id="ai-status-subtitle">Telugu & English Smart Sales Agent</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <!-- Voice Read Aloud Toggle -->
+        <button id="ai-voice-toggle-btn" class="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors" title="Toggle AI Voice Speech">
+          <i class="fa-solid fa-volume-high text-xs"></i>
+        </button>
+        <!-- Close Drawer -->
+        <button id="close-chat-drawer-btn" class="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+      
+      <!-- Initial AI Welcome Bubble -->
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-indigo-600/80 flex items-center justify-center text-white text-xs shrink-0 mt-1">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="ai-chat-bubble bot">
+          <p class="mb-2 font-medium" id="ai-welcome-heading">నమస్కారం! నేను మీ GiftGenie AI సేల్స్ అసిస్టెంట్‌ని. 🎁</p>
+          <p class="text-xs text-slate-300 leading-relaxed" id="ai-welcome-body">
+            మీకు ఏ రకమైన గిఫ్ట్ కార్డ్ కావాలి? స్నేహితుల పుట్టినరోజు, బ్రదర్ గేమింగ్, ఫ్యామిలీ షాపింగ్ లేదా మూవీస్ ఏదైనా సరే - మీ బడ్జెట్ చెప్తే బెస్ట్ డిస్కౌంట్‌తో క్షణాల్లో సూచిస్తాను!
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Prompt Suggestions in Drawer -->
+    <div class="p-2.5 border-t border-white/5 bg-slate-900/60 overflow-x-auto flex gap-2 no-scrollbar">
+      <button class="drawer-chip px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 whitespace-nowrap border border-white/10" data-msg="Friend birthday gift card under 1000">
+        🎂 Friend B'day under ₹1000
+      </button>
+      <button class="drawer-chip px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 whitespace-nowrap border border-white/10" data-msg="Best PC and console gaming cards">
+        🎮 Steam & PS5 Cards
+      </button>
+      <button class="drawer-chip px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 whitespace-nowrap border border-white/10" data-msg="Can you generate a sweet birthday wish in Telugu?">
+        ✍️ తెలుగులో బర్త్‌డే విష్ రాయండి
+      </button>
+      <button class="drawer-chip px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 whitespace-nowrap border border-white/10" data-msg="Cards with highest discount today">
+        🔥 Highest Discounts
+      </button>
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="p-3 border-t border-white/10 bg-slate-900/90">
+      <form id="chat-form" class="flex items-center gap-2">
+        <!-- Voice Input Mic Button -->
+        <button type="button" id="mic-input-btn" class="p-2.5 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors" title="Speak via Microphone">
+          <i class="fa-solid fa-microphone text-sm"></i>
+        </button>
+        <input 
+          type="text" 
+          id="chat-input" 
+          placeholder="Type message in Telugu or English..." 
+          class="flex-1 bg-slate-800/80 border border-white/10 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-all"
+        >
+        <button 
+          type="submit" 
+          id="send-chat-btn" 
+          class="p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30 transition-all"
+        >
+          <i class="fa-solid fa-paper-plane text-sm"></i>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. CHECKOUT MODAL -->
+  <div id="checkout-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden my-8">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-white/10 bg-slate-900/90 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="checkout-card-icon" class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-lg">
+            <i class="fa-solid fa-gift"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white" id="checkout-card-name">Amazon Pay Gift Card</h3>
+            <p class="text-xs text-slate-400" id="checkout-card-brand">Amazon India • Instant E-Delivery</p>
+          </div>
+        </div>
+        <button id="close-checkout-btn" class="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+        
+        <!-- Denomination Picker -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider" id="lbl-select-value">Select Gift Card Value</label>
+          <div id="checkout-denom-pills" class="flex flex-wrap gap-2">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Recipient Type Toggle -->
+        <div>
+          <div class="flex items-center gap-4 border-b border-white/10 pb-3">
+            <label class="flex items-center gap-2 cursor-pointer text-xs font-medium">
+              <input type="radio" name="gift-target" value="self" checked class="text-indigo-600 focus:ring-indigo-500">
+              <span id="opt-buy-myself">Buy for Myself</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer text-xs font-medium">
+              <input type="radio" name="gift-target" value="gift" class="text-indigo-600 focus:ring-indigo-500">
+              <span id="opt-gift-someone">🎁 Gift to Someone Else</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Customer & Recipient Details Form -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-your-name">Your Full Name *</label>
+            <input type="text" id="cust-name" value="Ravi Kumar" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-your-email">Your Email (for receipt) *</label>
+            <input type="email" id="cust-email" value="ravi.kumar@example.com" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <!-- Gifting Specific Fields (Hidden when 'self') -->
+        <div id="gift-extra-fields" class="hidden space-y-4 p-4 rounded-xl bg-slate-900/60 border border-indigo-500/20">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-rec-name">Recipient's Name</label>
+              <input type="text" id="rec-name" placeholder="e.g. Priya" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-rec-email">Recipient's Email / WhatsApp</label>
+              <input type="text" id="rec-email" placeholder="priya@example.com" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-slate-400" id="lbl-custom-msg">Personalized Gift Message</label>
+              <button type="button" id="btn-generate-ai-wish" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span id="txt-gen-ai-wish">Generate AI Wish</span>
+              </button>
+            </div>
+            <textarea id="rec-message" rows="2" placeholder="Happy Birthday! Hope you enjoy picking what you love..." class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500"></textarea>
+          </div>
+        </div>
+
+        <!-- Coupon Code Box -->
+        <div class="p-3 rounded-xl bg-slate-900/60 border border-white/10 flex items-center gap-2">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-tag absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="coupon-input" placeholder="Promo code (e.g. WELCOME10)" class="w-full bg-transparent pl-8 pr-2 py-1 text-xs text-white uppercase placeholder-slate-500 focus:outline-none">
+          </div>
+          <button type="button" id="apply-coupon-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-white/10 transition-colors">
+            Apply
+          </button>
+        </div>
+        <div id="coupon-feedback" class="text-xs hidden font-medium"></div>
+
+        <!-- Payment Method Options -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider" id="lbl-payment-mode">Select Payment Method</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="p-3 rounded-xl bg-slate-800/80 border border-emerald-500/80 flex flex-col items-center justify-center gap-1.5 cursor-pointer text-center hover:bg-slate-700/80 transition-colors">
+              <input type="radio" name="payment-method" value="UPI" checked class="hidden">
+              <i class="fa-solid fa-qrcode text-emerald-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">Direct UPI QR</span>
+              <span class="text-[10px] text-emerald-300">PhonePe / GPay</span>
+            </label>
+            <label class="p-3 rounded-xl bg-slate-800/80 border border-white/10 flex flex-col items-center justify-center gap-1.5 cursor-pointer text-center hover:bg-slate-700/80 transition-colors">
+              <input type="radio" name="payment-method" value="Card" class="hidden">
+              <i class="fa-solid fa-credit-card text-purple-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">Debit / Credit</span>
+              <span class="text-[10px] text-slate-400">Visa, RuPay</span>
+            </label>
+            <label class="p-3 rounded-xl bg-slate-800/80 border border-white/10 flex flex-col items-center justify-center gap-1.5 cursor-pointer text-center hover:bg-slate-700/80 transition-colors">
+              <input type="radio" name="payment-method" value="NetBanking" class="hidden">
+              <i class="fa-solid fa-building-columns text-amber-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">NetBanking</span>
+              <span class="text-[10px] text-slate-400">All Indian Banks</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- REAL DYNAMIC UPI QR PAYMENT BOX -->
+        <div id="upi-qr-section" class="p-4 rounded-2xl bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-emerald-500/40 space-y-3">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-xs font-bold text-white uppercase tracking-wider">లైవ్ UPI పేమెంట్ (Live UPI Payment)</span>
+            </div>
+            <span class="text-[11px] font-mono text-emerald-400 font-bold" id="upi-amount-display">₹950.00</span>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-4 py-2">
+            <!-- QR Code Canvas / Image -->
+            <div class="p-2.5 rounded-xl bg-white shadow-lg shadow-black/50 shrink-0 text-center">
+              <img id="dynamic-upi-qr-img" src="" alt="Scan to Pay via UPI" class="w-36 h-36 mx-auto rounded-lg">
+              <div class="text-[9px] text-slate-800 font-bold mt-1 tracking-tight">SCAN VIA ANY UPI APP</div>
+            </div>
+
+            <!-- UPI ID & Details -->
+            <div class="flex-1 space-y-2 text-xs w-full">
+              <div>
+                <span class="text-slate-400 text-[11px] block">మర్చంట్ UPI ID (Merchant UPI ID):</span>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="font-mono text-emerald-300 font-bold bg-slate-900/90 px-2.5 py-1 rounded-lg border border-white/10 text-xs sm:text-sm select-all">9059382131-2@ybl</span>
+                  <button type="button" id="copy-upi-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] border border-white/10">
+                    <i class="fa-solid fa-copy mr-1"></i> Copy
+                  </button>
+                </div>
+              </div>
+
+              <!-- Direct UPI Intent Link for Mobile -->
+              <a id="direct-upi-intent-link" href="#" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-semibold text-xs hover:bg-emerald-600/50 transition-all">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <span>Open GPay / PhonePe App</span>
+              </a>
+
+              <!-- 12-Digit UTR Input -->
+              <div>
+                <label class="block text-slate-300 text-[11px] font-medium mb-1">
+                  పే చేసిన తర్వాత 12-అంకెల UTR / Ref Number ఎంటర్ చేయండి:
+                </label>
+                <input 
+                  type="text" 
+                  id="upi-utr-input" 
+                  placeholder="e.g. 428190284910 (12 digits)" 
+                  maxlength="16"
+                  class="w-full bg-slate-900 border border-white/20 rounded-xl px-3 py-1.5 text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:border-emerald-400"
+                >
+                <span class="text-[10px] text-slate-400 mt-0.5 block">PhonePe లేదా GPay సక్సెస్ స్క్రీన్‌లో ఈ UTR నంబర్ కనిపిస్తుంది.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="p-4 rounded-xl bg-slate-900/90 border border-white/10 space-y-2 text-xs">
+          <div class="flex justify-between text-slate-400">
+            <span id="lbl-subtotal">Gift Card Value:</span>
+            <span id="summary-card-val" class="text-white font-mono font-medium">₹1,000.00</span>
+          </div>
+          <div class="flex justify-between text-emerald-400">
+            <span id="lbl-brand-disc">Brand Instant Discount:</span>
+            <span id="summary-brand-disc" class="font-mono font-medium">- ₹50.00 (5%)</span>
+          </div>
+          <div id="summary-coupon-row" class="hidden flex justify-between text-emerald-400">
+            <span>Promo Code Savings:</span>
+            <span id="summary-coupon-disc" class="font-mono font-medium">- ₹100.00</span>
+          </div>
+          <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-white">
+            <span id="lbl-final-pay">Total to Pay:</span>
+            <span id="summary-final-price" class="text-lg text-emerald-400 font-mono">₹950.00</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          id="confirm-pay-btn" 
+          class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600 hover:opacity-95 text-white font-bold text-sm tracking-wide shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all"
+        >
+          <i class="fa-solid fa-lock text-xs"></i>
+          <span id="btn-pay-now-text">Pay ₹950 & Deliver 16-Digit Voucher</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 2. SCRATCH-TO-REVEAL VOUCHER DELIVERY MODAL -->
+  <div id="voucher-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel w-full max-w-lg rounded-2xl border border-emerald-500/30 shadow-2xl overflow-hidden my-8 relative">
+      
+      <!-- Top banner success -->
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 text-center text-white">
+        <div class="w-12 h-12 rounded-full bg-white/20 mx-auto flex items-center justify-center text-2xl mb-2">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="font-bold text-lg" id="modal-success-title">Order Successful! Here is Your Voucher</h3>
+        <p class="text-xs text-emerald-100" id="modal-success-sub">Digital Code generated and stored securely</p>
+      </div>
+
+      <div class="p-6 space-y-6">
+        
+        <!-- Card Mockup inside Modal -->
+        <div id="voucher-card-display" class="gift-card-visual p-5 text-white relative">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i id="voucher-brand-icon" class="text-2xl"></i>
+              <span id="voucher-card-title" class="font-bold text-sm">Amazon Pay</span>
+            </div>
+            <span id="voucher-denom-badge" class="px-2.5 py-1 rounded-full bg-white/20 text-xs font-mono font-bold backdrop-blur-md">₹1,000</span>
+          </div>
+
+          <div class="my-4 flex items-center justify-between">
+            <div class="emv-chip"></div>
+            <i class="fa-solid fa-wifi contactless-wave"></i>
+          </div>
+
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-[10px] text-white/70 uppercase tracking-widest">ORDER ID</div>
+              <div id="voucher-order-id" class="font-mono text-xs font-semibold">GC-ORD-20261028-1234</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[10px] text-white/70 uppercase tracking-widest">VALID THRU</div>
+              <div class="font-mono text-xs font-semibold">12 MONTHS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scratch Area / Revealed Code Box -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider" id="lbl-digital-code">Digital Gift Card Code & PIN</label>
+            <button id="quick-reveal-btn" class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold">
+              <i class="fa-solid fa-eye mr-1"></i> Reveal Instantly
+            </button>
+          </div>
+
+          <!-- Scratch Canvas Container -->
+          <div class="scratch-container" id="scratch-box">
+            <div class="scratch-hidden-content">
+              <div class="text-xs text-slate-400 mb-1">16-DIGIT VOUCHER CODE</div>
+              <div id="revealed-code" class="text-lg md:text-xl font-mono font-extrabold text-amber-300 tracking-wider">
+                5829-3910-4820-1940
+              </div>
+              <div class="flex items-center gap-4 mt-2 text-xs">
+                <span class="text-slate-400">PIN: <strong id="revealed-pin" class="text-white font-mono">4821</strong></span>
+                <span class="text-slate-400">STATUS: <strong class="text-emerald-400">ACTIVE</strong></span>
+              </div>
+            </div>
+            <canvas id="scratch-canvas" class="scratch-canvas"></canvas>
+          </div>
+          <p class="text-[11px] text-slate-400 text-center mt-1.5" id="scratch-hint">👆 Drag/Scratch above or click "Reveal Instantly" to unmask code</p>
+        </div>
+
+        <!-- Action Buttons: Copy, Print, Close -->
+        <div class="grid grid-cols-2 gap-3">
+          <button id="copy-voucher-btn" class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-white/10 flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-copy"></i>
+            <span id="btn-copy-code-text">Copy Code</span>
+          </button>
+          <button id="print-voucher-btn" class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-white/10 flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-print"></i>
+            <span id="btn-print-text">Print Voucher</span>
+          </button>
+        </div>
+
+        <!-- Redemption Steps -->
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-white/10 text-xs space-y-1.5">
+          <div class="font-bold text-slate-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info text-indigo-400"></i>
+            <span id="lbl-how-redeem">How to Redeem:</span>
+          </div>
+          <p id="voucher-redemption-text" class="text-slate-400 leading-relaxed">
+            1. Open brand app or portal. 2. Select Redeem Gift Card. 3. Enter the 16-digit code and PIN.
+          </p>
+        </div>
+
+        <button id="close-voucher-modal-btn" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs">
+          Done & Close
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 3. BALANCE CHECKER MODAL -->
+  <div id="balance-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-md rounded-2xl border border-white/10 shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="font-bold text-base text-white flex items-center gap-2">
+          <i class="fa-solid fa-wallet text-amber-400"></i>
+          <span id="title-check-balance">Check Gift Card Balance</span>
+        </h3>
+        <button id="close-balance-modal-btn" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-enter-code">Enter 16-Digit Voucher Code or Order ID</label>
+        <input type="text" id="balance-input" placeholder="e.g. 5839-2940-1094-8271" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono">
+      </div>
+
+      <button id="submit-balance-btn" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs">
+        Verify Balance
+      </button>
+
+      <div id="balance-result" class="hidden p-4 rounded-xl bg-slate-900 border border-white/10 text-xs space-y-2">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 4. ADMIN ANALYTICS & PAYOUT DASHBOARD MODAL -->
+  <div id="admin-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel w-full max-w-3xl rounded-2xl border border-white/10 shadow-2xl p-6 space-y-6 my-8">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-emerald-400 text-lg"></i>
+          <div>
+            <h3 class="font-bold text-base text-white">Merchant Admin & Payout Settlement Center</h3>
+            <p class="text-[11px] text-slate-400">సేల్స్ రెవెన్యూ & మీ బ్యాంక్ అకౌంట్‌కి డబ్బులు వచ్చే విధానం</p>
+          </div>
+        </div>
+        <button id="close-admin-modal-btn" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs inside Admin Modal -->
+      <div class="flex items-center gap-3 border-b border-white/10 pb-2">
+        <button id="admin-tab-analytics-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white flex items-center gap-2">
+          <i class="fa-solid fa-chart-line"></i> Sales Analytics
+        </button>
+        <button id="admin-tab-payout-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2 border border-white/10">
+          <i class="fa-solid fa-building-columns text-emerald-400"></i> Bank Payouts & Money Settlement
+        </button>
+      </div>
+
+      <!-- TAB 1: SALES ANALYTICS -->
+      <div id="admin-view-analytics" class="space-y-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <div class="text-[11px] text-slate-400 uppercase">Total Revenue</div>
+            <div id="adm-revenue" class="text-lg font-mono font-bold text-emerald-400">₹0</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <div class="text-[11px] text-slate-400 uppercase">Vouchers Sold</div>
+            <div id="adm-orders" class="text-lg font-mono font-bold text-indigo-400">0</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <div class="text-[11px] text-slate-400 uppercase">Customer Savings</div>
+            <div id="adm-savings" class="text-lg font-mono font-bold text-amber-400">₹0</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+            <div class="text-[11px] text-slate-400 uppercase">Active Brands</div>
+            <div id="adm-cards" class="text-lg font-mono font-bold text-purple-400">22</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Top Selling Gift Cards</h4>
+          <div id="adm-top-sellers" class="space-y-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: BANK PAYOUTS & MONEY FLOW (డబ్బు ఎలా వస్తుంది?) -->
+      <div id="admin-view-payout" class="hidden space-y-5">
+        
+        <!-- Visual Money Flow Architecture -->
+        <div class="p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30">
+          <div class="text-xs font-bold text-indigo-300 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-arrows-split-up-and-left text-sm"></i>
+            డబ్బులు మీ అకౌంట్‌కి ఎలా వస్తాయి? (How Payment Reaches Your Bank):
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-center text-xs mt-3">
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+              <div class="text-amber-400 font-bold mb-1">1. కస్టమర్ చెల్లింపు</div>
+              <p class="text-[11px] text-slate-400">కస్టమర్ UPI, PhonePe, GPay లేదా కార్డులతో గిఫ్ట్ కార్డ్ కొంటారు.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-white/10">
+              <div class="text-cyan-400 font-bold mb-1">2. పేమెంట్ గేట్‌వే</div>
+              <p class="text-[11px] text-slate-400">Razorpay / Cashfree ద్వారా పేమెంట్ వెంటనే వెరిఫై అయి ఎస్క్రో పూల్‌కి వెళ్తుంది.</p>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/40">
+              <div class="text-emerald-400 font-bold mb-1">3. మీ బ్యాంక్ అకౌంట్</div>
+              <p class="text-[11px] text-slate-300 font-semibold">T+1 సెటిల్మెంట్‌తో ప్రతిరోజూ ఉదయం నేరుగా మీ బ్యాంక్ అకౌంట్‌కి జమ అవుతుంది!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bank Account Configuration Form -->
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-building-columns text-emerald-400"></i>
+              మీ సెటిల్మెంట్ బ్యాంక్ అకౌంట్ వివరాలు (Your Bank Details)
+            </h4>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">AUTO-PAYOUT ACTIVE</span>
+          </div>
+
+          <form id="merchant-bank-form" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label class="block text-slate-400 mb-1">ఖాతాదారుని పేరు (Account Holder)</label>
+              <input type="text" id="m-name" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">బ్యాంక్ పేరు (Bank Name)</label>
+              <input type="text" id="m-bank" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">ఖాతా సంఖ్య (Account Number)</label>
+              <input type="text" id="m-account" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white font-mono">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">IFSC కోడ్ (IFSC Code)</label>
+              <input type="text" id="m-ifsc" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white uppercase font-mono">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">వ్యాపార UPI ID (Business UPI ID)</label>
+              <input type="text" id="m-upi" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white font-mono">
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">యాక్టివ్ పేమెంట్ గేట్‌వే (Gateway)</label>
+              <select id="m-gateway" class="w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-white">
+                <option value="Razorpay">Razorpay Payment Gateway</option>
+                <option value="PhonePe">PhonePe Business PG</option>
+                <option value="Cashfree">Cashfree Auto-Payouts</option>
+                <option value="DirectUPI">Direct Instant UPI QR</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2 flex items-center justify-end pt-2">
+              <button type="submit" id="save-bank-btn" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/30">
+                Save & Update Bank Account
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Recent Bank Payout Settlements List -->
+        <div>
+          <h4 class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">తాజా బ్యాంక్ డిపాజిట్ రికార్డులు (Recent Bank Settlements)</h4>
+          <div id="adm-settlements-list" class="space-y-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-slate-950/80 mt-20 py-12 px-4 lg:px-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+        <span class="font-bold text-slate-300 text-sm">GiftCraft AI Marketplace</span>
+      </div>
+      <p class="text-center md:text-left">
+        Powered by AI Sales Concierge. Fast & Secure digital code delivery across India.
+      </p>
+      <div class="flex items-center gap-4 text-slate-400">
+        <span class="hover:text-white cursor-pointer">Terms & Conditions</span>
+        <span>•</span>
+        <span class="hover:text-white cursor-pointer">Privacy Policy</span>
+        <span>•</span>
+        <span class="hover:text-white cursor-pointer">Support</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Javascript -->
+  <script src="app.js"></script>
+</body>
+</html>
