@@ -773,8 +773,9 @@ async function executeOrderCheckout() {
   if (!card) return;
 
   const payBtn = document.getElementById('confirm-pay-btn');
-  const custName = document.getElementById('cust-name').value.trim() || 'Ravi Kumar';
-  const custEmail = document.getElementById('cust-email').value.trim() || 'ravi.kumar@example.com';
+  const custName = document.getElementById('cust-name').value.trim() || 'Valued Customer';
+  const custPhone = document.getElementById('cust-phone') ? document.getElementById('cust-phone').value.trim() : '';
+  const custEmail = document.getElementById('cust-email').value.trim() || 'customer@giftcraft.store';
   const giftTarget = document.querySelector('input[name="gift-target"]:checked').value;
   const recName = giftTarget === 'gift' ? document.getElementById('rec-name').value.trim() : custName;
   const recEmail = giftTarget === 'gift' ? document.getElementById('rec-email').value.trim() : custEmail;
@@ -792,6 +793,7 @@ async function executeOrderCheckout() {
         card_id: card.id,
         denomination: AppState.selectedDenomination,
         customer_name: custName,
+        customer_phone: custPhone,
         customer_email: custEmail,
         recipient_name: recName,
         recipient_email: recEmail,

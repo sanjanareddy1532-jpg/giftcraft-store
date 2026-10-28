@@ -144,6 +144,7 @@ def seed_data(conn):
 
     # Seed Categories
     categories = [
+        ("coupons", "Hot Promo Vouchers", "లక్ష్య డిస్కౌంట్ వోచర్లు (₹19 - ₹49)", "fa-tags", "Domino's, boAt, Flight, Audible, CCD, Derma Co", "FLASH SALE"),
         ("gaming", "Gaming & Esports", "గేమింగ్ & ఇ-స్పోర్ట్స్", "fa-gamepad", "Steam, PlayStation, Xbox, Roblox, BGMI", "HOT"),
         ("shopping", "Shopping & Retail", "షాపింగ్ & ఇ-కామర్స్", "fa-bag-shopping", "Amazon, Flipkart, Myntra, Nykaa, Ajio", "POPULAR"),
         ("entertainment", "Entertainment & OTT", "సినిమాలు & వినోదం", "fa-film", "Netflix, Spotify, BookMyShow, Hotstar", "TRENDING"),
@@ -151,7 +152,7 @@ def seed_data(conn):
         ("travel", "Travel & Stay", "ట్రావెల్ & హోటల్స్", "fa-plane-departure", "MakeMyTrip, Uber, Airbnb, Cleartrip", "DEALS"),
         ("software", "Software & Utilities", "సాఫ్ట్‌వేర్ & సబ్‌స్క్రిప్షన్స్", "fa-laptop-code", "Google Play, Apple, Canva, Microsoft", "NEW")
     ]
-    cursor.executemany("INSERT INTO categories VALUES (?, ?, ?, ?, ?, ?)", categories)
+    cursor.executemany("INSERT OR IGNORE INTO categories VALUES (?, ?, ?, ?, ?, ?)", categories)
 
     # Seed Coupons
     coupons = [
@@ -159,7 +160,7 @@ def seed_data(conn):
         ("AIDEAL5", 5.0, 300.0, 1000.0, "AI Recommended Special 5% Discount"),
         ("FESTIVE15", 15.0, 500.0, 1500.0, "Mega Festive Celebration 15% OFF")
     ]
-    cursor.executemany("INSERT INTO coupons VALUES (?, ?, ?, ?, ?)", coupons)
+    cursor.executemany("INSERT OR IGNORE INTO coupons VALUES (?, ?, ?, ?, ?)", coupons)
 
     # Seed 22+ Gift Cards
     cards = [
@@ -426,6 +427,85 @@ def seed_data(conn):
             "Valid for individual Canva account upgrades.",
             "1. Go to canva.com/redeem. 2. Paste digital key. 3. Pro unlocks for selected duration.",
             0, 1, 1, 480
+        ),
+
+        # User's Special Discount Vouchers (Direct Cash Inflow)
+        (
+            "dominos-33off-voucher", "Domino's 33% OFF + Rs.50 Cashback Code", "Domino's Pizza", "coupons",
+            "Flat 33% discount + extra Rs.50 cashback code on delicious Domino's pizza orders. Instant code sent to your WhatsApp!",
+            "డొమినోస్ పిజ్జా ఆర్డర్లపై ఫ్లాట్ 33% డిస్కౌంట్ + రూ. 50 క్యాష్‌బ్యాక్ ప్రోమో కోడ్. కేవలం ₹25 కే పొందండి!",
+            0.0, json.dumps([25]),
+            "linear-gradient(135deg, #006491 0%, #004d70 60%, #e31837 100%)",
+            "#e31837", "fa-solid fa-pizza-slice", 5.0, 480,
+            "Valid on Domino's Mobile App and Website for all users.",
+            "1. Apply Promo Code under Offers on Domino's app. 2. 33% discount + Rs.50 cashback is automatically applied.",
+            1, 1, 1, 950
+        ),
+        (
+            "boat-500off-voucher", "boAt Lifestyle Rs.500 OFF Voucher", "boAt Lifestyle", "coupons",
+            "Flat Rs.500 OFF promo voucher code for boAt earbuds, smartwatches, and headphones on official website.",
+            "బోట్ ఇయర్‌బడ్స్, స్మార్ట్‌వాచ్‌లు మరియు హెడ్‌ఫోన్స్‌పై రూ. 500 ఫ్లాట్ డిస్కౌంట్ వోచర్ కోడ్. కేవలం ₹29 కే!",
+            0.0, json.dumps([29]),
+            "linear-gradient(135deg, #e11d48 0%, #9f1239 60%, #111827 100%)",
+            "#e11d48", "fa-solid fa-headphones", 4.9, 620,
+            "Valid on boAt official website (boat-lifestyle.com).",
+            "1. Add any boAt product to cart. 2. Enter code in promo code field at checkout for Rs.500 instant discount.",
+            1, 1, 1, 1120
+        ),
+        (
+            "flight-600off-voucher", "Flight Ticket Rs.600 OFF Discount Code", "Flight Booking", "coupons",
+            "Save up to Rs.600 directly on domestic & international flight ticket bookings with this special promo code.",
+            "విమాన టిక్కెట్ బుకింగ్స్ పై రూ. 600 వరకు తక్షణ తగ్గింపు కోడ్. ట్రావెల్ ప్రియుల కోసం కేవలం ₹29 కే!",
+            0.0, json.dumps([29]),
+            "linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #0c4a6e 100%)",
+            "#0284c7", "fa-solid fa-plane-departure", 4.8, 310,
+            "Applicable on flight booking portals across domestic flights.",
+            "1. Select flight tickets. 2. Enter voucher code under Promo Codes during payment page to get up to Rs.600 off.",
+            1, 1, 1, 430
+        ),
+        (
+            "audible-2m-voucher", "Audible 2 Months Free Premium Membership", "Amazon Audible", "coupons",
+            "Unlock 2 full months of free Audible Premium audiobook membership and access 200,000+ top titles.",
+            "అమెజాన్ ఆడబుల్ 2 నెలల ప్రీమియం ఆడియోబుక్ మెంబర్‌షిప్ వోచర్ కోడ్. పుస్తకాలు వినేవారి కోసం కేవలం ₹19 కే!",
+            0.0, json.dumps([19]),
+            "linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #78350f 100%)",
+            "#f59e0b", "fa-solid fa-book-open-reader", 4.9, 540,
+            "Valid for all Amazon Audible users.",
+            "1. Visit audible.in/ep/redeem. 2. Enter promo code. 3. 2 months free membership activates immediately.",
+            1, 1, 1, 780
+        ),
+        (
+            "ccd-600off-voucher", "Cafe Coffee Day (CCD) Rs.600 OFF Code", "Cafe Coffee Day", "coupons",
+            "Enjoy up to Rs.600 OFF on delicious artisanal coffees, frappes, and snacks at Cafe Coffee Day outlets.",
+            "కేఫ్ కాఫీ డే (CCD) లో కాఫీలు మరియు స్నాక్స్‌పై రూ. 600 వరకు ఆదా చేసే స్పెషల్ వోచర్ కోడ్. కేవలం ₹25 కే!",
+            0.0, json.dumps([25]),
+            "linear-gradient(135deg, #b91c1c 0%, #881337 60%, #4c0519 100%)",
+            "#b91c1c", "fa-solid fa-mug-saucer", 4.8, 290,
+            "Valid across Cafe Coffee Day outlets and app orders.",
+            "1. Show code at CCD counter or enter on CCD app before payment.",
+            0, 1, 1, 360
+        ),
+        (
+            "derma-100cb-voucher", "The Derma Co 100% Cashback Voucher Code", "The Derma Co", "coupons",
+            "Get 100% cashback on skincare, sunscreens, and dermatological cosmetics on orders above Rs.899.",
+            "డెర్మా కో స్కిన్‌కేర్, సన్‌స్క్రీన్ మరియు బ్యూటీ ప్రోడక్ట్స్‌పై 100% క్యాష్‌బ్యాక్ వోచర్ కోడ్. కేవలం ₹19 కే!",
+            0.0, json.dumps([19]),
+            "linear-gradient(135deg, #0d9488 0%, #0f766e 60%, #115e59 100%)",
+            "#0d9488", "fa-solid fa-pump-soap", 4.9, 410,
+            "Valid on thedermaco.com official online store.",
+            "1. Add skincare products to cart on thedermaco.com. 2. Apply coupon code at checkout.",
+            0, 1, 1, 520
+        ),
+        (
+            "train-50off-voucher", "IRCTC Train Tickets Rs.50 OFF Discount Code", "Train Booking", "coupons",
+            "Instant flat Rs.50 discount voucher code for train ticket bookings across India.",
+            "రైలు టికెట్ బుకింగ్స్ పై రూ. 50 ఫ్లాట్ డిస్కౌంట్ వోచర్ కోడ్. కేవలం ₹15 కే!",
+            0.0, json.dumps([15]),
+            "linear-gradient(135deg, #1e3a8a 0%, #172554 60%, #0f172a 100%)",
+            "#1e3a8a", "fa-solid fa-train-subway", 4.7, 850,
+            "Valid on train ticket booking app checkout.",
+            "1. Book train tickets. 2. Apply promo code on payment page.",
+            0, 1, 1, 670
         )
     ]
     

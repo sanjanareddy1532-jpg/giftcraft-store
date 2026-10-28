@@ -231,6 +231,10 @@
             <i class="fa-solid fa-grid-2"></i>
             <span id="cat-all-txt">All Cards (అన్నీ)</span>
           </button>
+          <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 hover:border-emerald-400 flex items-center gap-2 transition-all whitespace-nowrap" data-category="coupons">
+            <i class="fa-solid fa-tags text-emerald-400"></i>
+            <span id="cat-coupons-txt">🔥 Hot Promo Codes (₹15 - ₹29)</span>
+          </button>
           <button class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 border border-white/10 hover:border-indigo-500/50 text-slate-300 flex items-center gap-2 transition-all whitespace-nowrap" data-category="gaming">
             <i class="fa-solid fa-gamepad text-indigo-400"></i>
             <span id="cat-gaming-txt">Gaming</span>
@@ -439,11 +443,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-your-name">Your Full Name *</label>
-            <input type="text" id="cust-name" value="Ravi Kumar" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <input type="text" id="cust-name" placeholder="e.g. Rahul" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-your-email">Your Email (for receipt) *</label>
-            <input type="email" id="cust-email" value="ravi.kumar@example.com" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <label class="block text-xs font-medium text-emerald-400 mb-1" id="lbl-your-phone">Your WhatsApp Number (కోడ్ పంపడానికి) *</label>
+            <input type="tel" id="cust-phone" placeholder="e.g. 9876543210" class="w-full bg-slate-800/90 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-400">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-medium text-slate-400 mb-1" id="lbl-your-email">Your Email Address</label>
+            <input type="email" id="cust-email" placeholder="e.g. name@example.com" class="w-full bg-slate-800/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
           </div>
         </div>
 
